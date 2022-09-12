@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [ProductController::class, 'productList'])->name('products.list');
+Route::get('cart', [ProductController::class, 'cartList'])->name('cart.list');
+Route::post('cart', [ProductController::class, 'addToCart'])->name('cart.store');
