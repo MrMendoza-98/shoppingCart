@@ -55,7 +55,7 @@
                 
             </tbody>
         </table>
-        <div>
+        <div class="text-2xl font-medium text-gray-700">
             Total: ${{ Cart::getTotal() }}
         </div>
         <div class="mt-5">
