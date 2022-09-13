@@ -3,10 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Cart;
+use App\Models\Order;
+use App\Models\Product;
+use App\Models\OrderItem;
 
 class CheckoutController extends Controller
 {
-    
+    public function __construct(Order $model)
+    {
+        // parent::__construct($model);
+        $this->model = $model;
+    }
+
     public function getCheckout()
     {
         return view('checkout');
@@ -16,20 +25,20 @@ class CheckoutController extends Controller
     {
         $order = Order::create([
             'order_number'      =>  'ORD-'.strtoupper(uniqid()),
-            'user_id'           => auth()->user()->id,
-            'status'            =>  'pending',
+            'user_id'           =>  0,
+            'status'            =>  'CREATED',
             'grand_total'       =>  Cart::getSubTotal(),
             'item_count'        =>  Cart::getTotalQuantity(),
             'payment_status'    =>  0,
             'payment_method'    =>  null,
-            'first_name'        =>  $params['first_name'],
-            'last_name'         =>  $params['last_name'],
-            'address'           =>  $params['address'],
-            'city'              =>  $params['city'],
-            'country'           =>  $params['country'],
-            'post_code'         =>  $params['post_code'],
-            'phone_number'      =>  $params['phone_number'],
-            'notes'             =>  $params['notes']
+            'first_name'        =>  $request->first_name,
+            'last_name'         =>  $request->last_name,
+            'address'           =>  $request->address,
+            'city'              =>  $request->city,
+            'country'           =>  $request->country,
+            'post_code'         =>  $request->post_code,
+            'phone_number'      =>  $request->phone_number,
+            'notes'             =>  $request->notes
         ]);
     
         if ($order) {
@@ -52,6 +61,6 @@ class CheckoutController extends Controller
             }
         }
     
-        return $order;
+        return redirect()->route('cart.list');
     }
 }

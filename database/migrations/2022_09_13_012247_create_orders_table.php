@@ -17,7 +17,6 @@ class CreateOrdersTable extends Migration
             $table->bigIncrements('id');
             $table->string('order_number')->unique();
             $table->unsignedInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
 
             $table->enum('status', ['CREATED', 'PAYED', 'REJECTED'])->default('CREATED');
             $table->decimal('grand_total', 20, 6);
