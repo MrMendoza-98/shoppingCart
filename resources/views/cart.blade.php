@@ -23,7 +23,7 @@
                         </div>
                     </figure>
                     <hr class="py-4">
-                    <a href="#" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4">Proceed To Checkout</a>
+                    <a href="{{ route('checkout.index') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4">Proceed To Checkout</a>
                     
                 </aside>
             </div>

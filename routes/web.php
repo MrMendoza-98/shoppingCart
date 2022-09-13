@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CheckoutController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,3 +19,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [ProductController::class, 'productList'])->name('products.list');
 Route::get('cart', [ProductController::class, 'cartList'])->name('cart.list');
 Route::post('cart', [ProductController::class, 'addToCart'])->name('cart.store');
+Route::get('checkout', [CheckoutController::class, 'getCheckout'])->name('checkout.index');
+Route::post('checkout', [CheckoutController::class, 'placeOrder'])->name('checkout.place.order');
+
