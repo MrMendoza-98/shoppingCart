@@ -7,12 +7,15 @@ use Cart;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\OrderItem;
+use App\Services\PlaceToPayService;
 
 class CheckoutController extends Controller
 {
-    public function __construct(Order $model)
+    protected $placeToPay;
+    public function __construct(Order $model, PlaceToPayService $placeToPay)
     {
         // parent::__construct($model);
+        $this->placeToPay = $placeToPay;
         $this->model = $model;
     }
 
@@ -59,8 +62,37 @@ class CheckoutController extends Controller
     
                 $order->items()->save($orderItem);
             }
+
+            
+            return $this->placeToPay->createRequest($request, $order->id);
         }
-    
-        return redirect()->route('cart.list');
+        
+        // return redirect()->back()->with('message','Order not placed');
+    }
+
+    public function response($orderID)
+    {
+        $data = (object)[];
+        $order = Order::find($orderID);
+        $response = PlaceToPayService::getRequestInfo($orderID);
+        // $order->status = $response['status']['status'];
+        // $order->save();
+        // switch ($order->status) {
+        //     case 'CREATED':
+        //         $data->estado_compra = "Creada";
+        //         break;
+            
+        //     case 'PAYED':
+        //         $data->estado_compra = "Aprovada";
+        //         break;
+
+        //     case 'REJECTED':
+        //         $data->estado_compra = "Rechazada";
+        //         break;
+        // }
+        // $data->order = $order;
+        // return $orderID;
+        return view('success', compact('order'));
+        // return redirect()->route('response.order');
     }
 }

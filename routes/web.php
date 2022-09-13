@@ -21,4 +21,5 @@ Route::get('cart', [ProductController::class, 'cartList'])->name('cart.list');
 Route::post('cart', [ProductController::class, 'addToCart'])->name('cart.store');
 Route::get('checkout', [CheckoutController::class, 'getCheckout'])->name('checkout.index');
 Route::post('checkout', [CheckoutController::class, 'placeOrder'])->name('checkout.place.order');
+Route::get('complete/{id}', [CheckoutController::class, 'response'])->name('success');
 
