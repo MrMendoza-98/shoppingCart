@@ -32,6 +32,7 @@ class CreateOrdersTable extends Migration
             $table->string('country');
             $table->string('post_code');
             $table->string('phone_number');
+            $table->string('email');
             $table->text('notes')->nullable();
 
             $table->timestamps();

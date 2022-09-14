@@ -65,7 +65,7 @@ class PlaceToPayService {
     {
         self::initialize();
 
-        $endpoint = self::$urlBaseAPI.'/api/session';
+        $endpoint = self::$urlBaseAPI.'api/session';
         $returnURL = url('complete/'.$referenceId);
         $credentials = self::getCredentials();
         $response = Http::post($endpoint, [
@@ -97,7 +97,7 @@ class PlaceToPayService {
     public static function getRequestInfo($requestId)
     {
         self::initialize();
-        $endpoint = self::$urlBaseAPI.'/api/session'.$requestId;
+        $endpoint = self::$urlBaseAPI.'api/session'.$requestId;
         $credentials = self::getCredentials();
         $response = Http::post( $endpoint, [
             "auth" => $credentials

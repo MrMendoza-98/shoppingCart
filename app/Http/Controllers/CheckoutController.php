@@ -41,6 +41,7 @@ class CheckoutController extends Controller
             'country'           =>  $request->country,
             'post_code'         =>  $request->post_code,
             'phone_number'      =>  $request->phone_number,
+            'email'             =>  $request->email,
             'notes'             =>  $request->notes
         ]);
     
@@ -72,27 +73,26 @@ class CheckoutController extends Controller
 
     public function response($orderID)
     {
-        $data = (object)[];
-        $order = Order::find($orderID);
         $response = PlaceToPayService::getRequestInfo($orderID);
-        // $order->status = $response['status']['status'];
-        // $order->save();
-        // switch ($order->status) {
-        //     case 'CREATED':
-        //         $data->estado_compra = "Creada";
-        //         break;
+        $order->status = $response['status']['status'];
+        switch ($order->status) {
+            case 'PENDING':
+                $order->status = 'CREATED';
+                break;
             
-        //     case 'PAYED':
-        //         $data->estado_compra = "Aprovada";
-        //         break;
+            case 'APPROVED':
+                $order->status = 'PAYED';
+                break;
 
-        //     case 'REJECTED':
-        //         $data->estado_compra = "Rechazada";
-        //         break;
-        // }
-        // $data->order = $order;
-        // return $orderID;
-        return view('success', compact('order'));
-        // return redirect()->route('response.order');
+            case 'REJECTED':
+                $order->status = 'REJECTED';
+                break;
+        }
+        $order->payment_status = 1;
+        $order->payment_method = 'PlacetoPay Sandbox';
+        $order->save();
+
+        Cart::clear();
+        return view('status', compact('order'));
     }
 }
