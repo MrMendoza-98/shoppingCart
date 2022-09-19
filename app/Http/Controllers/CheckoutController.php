@@ -64,8 +64,17 @@ class CheckoutController extends Controller
                 $order->items()->save($orderItem);
             }
 
+            // return $this->placeToPay->createRequest($request, $order->id);
+            $response = $this->placeToPay->createRequest($request, $order->id);
+            if ($response['status']['status'] == 'OK') {
+                $order->request_id = $response['requestId'];
+                $order->process_url = $response['processUrl'];
+                $order->save();
+                return redirect()->away($response['processUrl']);
+            }else{
+                $response->status()->message();
+            }
             
-            return $this->placeToPay->createRequest($request, $order->id);
         }
         
         // return redirect()->back()->with('message','Order not placed');
@@ -73,8 +82,9 @@ class CheckoutController extends Controller
 
     public function response($orderID)
     {
+        $order =  Order::find($orderID);
         $response = PlaceToPayService::getRequestInfo($orderID);
-        $order->status = $response['status']['status'];
+        // $order->status = $response['status']['status'];
         switch ($order->status) {
             case 'PENDING':
                 $order->status = 'CREATED';

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Http\Request;
+use Cart;
 use Illuminate\Http\Response;
 use Illuminate\Support\facades\Http;
 use Illuminate\Support\facades\URL;
@@ -75,7 +76,7 @@ class PlaceToPayService {
                 "description" => $request->order_number,
                 "amount" => [
                     "currency" => "COP",
-                    "total" => $request->grand_total
+                    "total" => Cart::getSubTotal()
                 ],
             ],
         

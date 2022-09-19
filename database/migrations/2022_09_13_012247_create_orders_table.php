@@ -21,7 +21,8 @@ class CreateOrdersTable extends Migration
             $table->enum('status', ['CREATED', 'PAYED', 'REJECTED'])->default('CREATED');
             $table->decimal('grand_total', 20, 6);
             $table->unsignedInteger('item_count');
-
+            $table->integer('request_id',10);
+            $table->string('process_url',255);
             $table->boolean('payment_status')->default(1);
             $table->string('payment_method')->nullable();
 
